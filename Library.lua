@@ -218,7 +218,7 @@ local Library = {
     OriginalMinSize = Vector2.new(480, 360),
     MinSize = Vector2.new(480, 360),
     DPIScale = 1,
-    CornerRadius = 4,
+    CornerRadius = 14,
 
     IsLightTheme = false,
     Scheme = {
@@ -3166,6 +3166,14 @@ do
             end
 
             if KeyPicker.Mode == "Toggle" and ParentObj.Type == "Toggle" and ParentObj.Disabled then
+                KeybindsToggle:SetVisibility(false)
+                return
+            end
+
+            -- Hide a Toggle-mode keybind from the on-screen list while its parent
+            -- Toggle is OFF (not just when disabled), so keybinds for inactive
+            -- features don't linger in the list.
+            if KeyPicker.Mode == "Toggle" and ParentObj.Type == "Toggle" and not ParentObj.Value then
                 KeybindsToggle:SetVisibility(false)
                 return
             end
