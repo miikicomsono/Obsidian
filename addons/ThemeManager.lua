@@ -48,16 +48,12 @@ local ThemeManager = {
     DefaultThemeName = nil,
 
     BuiltInThemes = {
-        ["Default"] = {
-            1,
-            { FontColor = "ffffff", MainColor = "191919", AccentColor = "7d55ff", BackgroundColor = "0f0f0f", OutlineColor = "282828", BackgroundImage = "" },
-        },
         ["Revenant"] = {
-            2,
+            1,
             { FontColor = "ffffff", MainColor = "000000", AccentColor = "a6a6a6", BackgroundColor = "090909", OutlineColor = "090909", FontFace = "Gotham" },
         },
-        ["Default Obsidian"] = {
-            3,
+        ["Old Obsidian"] = {
+            2,
             { FontColor = "ffffff", MainColor = "191919", AccentColor = "7d55ff", BackgroundColor = "0f0f0f", OutlineColor = "282828", FontFace = "Code" },
         },
         ["Old Revenant."] = {
