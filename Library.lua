@@ -4905,9 +4905,23 @@ do
             Toggle:Display()
 
             for _, Addon in Toggle.Addons do
-                if Addon.Type == "KeyPicker" and Addon.SyncToggleState then
-                    Addon.Toggled = Toggle.Value
-                    Addon:Update()
+                if Addon.Type == "KeyPicker" then
+                    if Addon.SyncToggleState then
+                        Addon.Toggled = Toggle.Value
+                        Addon:Update()
+                    elseif Addon.Mode == "Toggle" and not Toggle.Value then
+                        -- General keybind desync fix: a Toggle-mode keybind keeps
+                        -- its own .Toggled state independent of the toggle (since
+                        -- SyncToggleState is off). If the toggle is switched OFF
+                        -- while the keybind is still 'on', that stale true would make
+                        -- the next keypress a no-op / flip things backwards. So
+                        -- whenever the toggle goes false, clear the keybind's toggled
+                        -- state (and refresh its on-screen entry) so they stay in
+                        -- lockstep. Enabling never force-sets it, so the first press
+                        -- after re-enabling still turns the feature on.
+                        Addon.Toggled = false
+                        Addon:Update()
+                    end
                 end
             end
 
@@ -5168,9 +5182,23 @@ do
             Toggle:Display()
 
             for _, Addon in Toggle.Addons do
-                if Addon.Type == "KeyPicker" and Addon.SyncToggleState then
-                    Addon.Toggled = Toggle.Value
-                    Addon:Update()
+                if Addon.Type == "KeyPicker" then
+                    if Addon.SyncToggleState then
+                        Addon.Toggled = Toggle.Value
+                        Addon:Update()
+                    elseif Addon.Mode == "Toggle" and not Toggle.Value then
+                        -- General keybind desync fix: a Toggle-mode keybind keeps
+                        -- its own .Toggled state independent of the toggle (since
+                        -- SyncToggleState is off). If the toggle is switched OFF
+                        -- while the keybind is still 'on', that stale true would make
+                        -- the next keypress a no-op / flip things backwards. So
+                        -- whenever the toggle goes false, clear the keybind's toggled
+                        -- state (and refresh its on-screen entry) so they stay in
+                        -- lockstep. Enabling never force-sets it, so the first press
+                        -- after re-enabling still turns the feature on.
+                        Addon.Toggled = false
+                        Addon:Update()
+                    end
                 end
             end
 
