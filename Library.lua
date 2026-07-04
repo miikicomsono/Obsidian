@@ -8122,7 +8122,7 @@ function Library:CreateWindow(WindowInfo)
             ImageRectSize = BackgroundIcon and BackgroundIcon.ImageRectSize or Vector2.zero,
             Position = UDim2.fromScale(0, 0),
             Size = UDim2.fromScale(1, 1),
-            ScaleType = Enum.ScaleType.Crop,
+            ScaleType = Enum.ScaleType.Stretch,
             ZIndex = 999,
             BackgroundTransparency = 1,
             ImageTransparency = 0.75,
