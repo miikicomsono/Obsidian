@@ -1101,8 +1101,63 @@ function Library:GetIcon(IconName: string)
     return Icon
 end
 
+-- Download a web image (http/https) and expose it via getcustomasset so an
+-- ImageLabel can actually render it (Roblox can't load raw web links directly).
+-- Cached in memory + on disk so a given URL is only fetched once.
+Library._UrlAssetCache = Library._UrlAssetCache or {}
+function Library:GetImageFromUrl(Url: string): string?
+    if typeof(Url) ~= "string" then
+        return nil
+    end
+    if Library._UrlAssetCache[Url] then
+        return Library._UrlAssetCache[Url]
+    end
+    if not (getcustomasset and writefile) then
+        return nil -- executor lacks file/custom-asset support
+    end
+
+    -- stable filename per URL; keep the original extension if present, else .png
+    local ext = Url:match("%.(%w%w%w%w?)$") or "png"
+    local safe = Url:gsub("%W", ""):sub(-40)
+    local folder = "obsidian_images"
+    local path = folder .. "/" .. #Url .. "_" .. safe .. "." .. ext
+
+    local ok = pcall(function()
+        if isfolder and makefolder and not isfolder(folder) then
+            makefolder(folder)
+        end
+        if not (isfile and isfile(path)) then
+            writefile(path, game:HttpGet(Url))
+        end
+    end)
+    if not ok then
+        return nil
+    end
+
+    local ok2, asset = pcall(getcustomasset, path)
+    if ok2 and typeof(asset) == "string" and asset ~= "" then
+        Library._UrlAssetCache[Url] = asset
+        return asset
+    end
+    return nil
+end
+
 function Library:GetCustomIcon(IconName: string): any
     if not IconName then
+        return nil
+    end
+
+    -- Web-URL background/icon support: turn an http(s) link into a usable asset.
+    if typeof(IconName) == "string" and IconName:match("^https?://") then
+        local Asset = Library:GetImageFromUrl(IconName)
+        if Asset then
+            return {
+                Url = Asset,
+                ImageRectOffset = Vector2.zero,
+                ImageRectSize = Vector2.zero,
+                Custom = true,
+            }
+        end
         return nil
     end
 
