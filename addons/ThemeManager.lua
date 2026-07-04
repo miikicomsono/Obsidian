@@ -52,7 +52,10 @@ local ThemeManager = {
             1,
             { FontColor = "ffffff", MainColor = "000000", AccentColor = "a6a6a6", BackgroundColor = "090909", OutlineColor = "090909", FontFace = "Gotham" },
         },
-        ["Old Obsidian"] = {
+        -- "Default" is required by the manager code as its mutable default slot;
+        -- it is the same theme the old build called "Default Obsidian" (identical
+        -- colors), so the duplicate "Default Obsidian" entry was removed.
+        ["Default"] = {
             2,
             { FontColor = "ffffff", MainColor = "191919", AccentColor = "7d55ff", BackgroundColor = "0f0f0f", OutlineColor = "282828", FontFace = "Code" },
         },
@@ -857,8 +860,10 @@ function ThemeManager:CreateThemeManager(Themesbox: any)
         Multi = false
     })
     
-    Themesbox:AddInput("BackgroundImage", { 
+    Themesbox:AddInput("BackgroundImage", {
         Text = "Background Image",
+        Placeholder = "rbxassetid or https:// image link",
+        Tooltip = "Accepts a Roblox asset id OR a direct image URL (.png/.jpg). URLs are downloaded via getcustomasset (needs an executor with writefile/getcustomasset).",
 
         Default = "",
         ClearTextOnFocus = false,
