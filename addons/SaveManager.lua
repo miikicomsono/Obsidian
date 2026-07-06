@@ -111,11 +111,10 @@ local ElementParser = {}; do
     CreateParser(
         "Toggle", "Toggles",
         function(Index: string, Toggle: any)
-            return { value = Toggle.Value }
+            return { value = tostring(Toggle.Value) }
         end,
         function(Element: any?, Data: any)
             if not Element then return end
-            if Element.Value == Data.value then return end
             
             Element:SetValue(Data.value)
         end
@@ -128,8 +127,7 @@ local ElementParser = {}; do
         end,
         function(Element: any?, Data: any)
             if not Element then return end
-            if Element.Value == Data.value then return end
-
+            
             Element:SetValue(Data.value)
         end
     )
@@ -141,7 +139,6 @@ local ElementParser = {}; do
         end,
         function(Element: any?, Data: any)
             if not Element then return end
-            if Element.Value == Data.value then return end
             
             Element:SetValue(Data.value)
         end
@@ -182,10 +179,10 @@ local ElementParser = {}; do
         end,
         function(Element: any?, Data: any)
             if not Element then return end
-            if typeof(Data.text) ~= "string" then return end
-            if Element.Value == Data.text then return end
-
-            Element:SetValue(Data.text)
+            
+            if type(Data.text) == "string" then
+                Element:SetValue(Data.text)
+            end
         end
     )
 
